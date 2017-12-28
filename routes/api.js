@@ -1,4 +1,5 @@
 var express = require('express');
+var ogp = require('ogp-parser');
 var router = express.Router();
 
 /* サンプルAPI①
@@ -25,24 +26,45 @@ router.get('/', function(req, res, next) {
  * http://localhost:3000/api/(任意の文字列) にGETメソッドのリクエストを投げると、
  * JSON形式で(任意の文字列)を返す。
  */
-router.get('/:url', function (req, res, next) {
-  var param = {"result":"[GET] " + req.params.url};        // レスポンスで返す値。JSON形式。
-  res.header('Content-Type', 'application/json; charset=utf-8'); // 「レスポンスはJSON形式で返すよ」の意味
-  res.send(param);                                               // 「レスポンス送るよ」の意味
-});
+// router.get('/:url', function (req, res, next) {
+//   var param = {"result":"[GET] " + req.params.url};        // レスポンスで返す値。JSON形式。
+//   res.header('Content-Type', 'application/json; charset=utf-8'); // 「レスポンスはJSON形式で返すよ」の意味
+//   res.send(param);                                               // 「レスポンス送るよ」の意味
+// });
 
 /* サンプルAPI④
  * http://localhost:3000/api にPOSTメソッドのリクエストを投げると、
  * JSON形式で文字列を返す。
  */
-router.post('/', function(req, res, next) {
-  var param = {
-    "result": "[POST]",
-    "req": req.body
-  };
-  res.header('Content-Type', 'application/json; charset=utf-8');
-  res.send(param);
+// router.post('/', function(req, res, next) {
+//   var param = {
+//     "result": "[POST]",
+//     "req": req.body
+//   };
+//   res.header('Content-Type', 'application/json; charset=utf-8');
+//   res.send(param);
+// });
+
+router.get('/:url', function (req, res, next) {
+  var parser = require("ogp-parser");
+  parser(req.params.url, true).then(function(data) {
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send(data);
+  }).catch(function(error) {
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send(error);
+  });
 });
 
+router.post('/', function(req, res, next) {
+  var parser = require("ogp-parser");
+  parser(req.body.url, true).then(function(data) {
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send(data);
+  }).catch(function(error) {
+    res.header('Content-Type', 'application/json; charset=utf-8');
+    res.send(error);
+  });
+});
 
 module.exports = router;
