@@ -16,6 +16,8 @@ $ curl -d url=https://qiita.com/uriuriuriu http://localhost:3000/api/
 
 ### result
 
+return jsonp
+
 ```json
 {
   title: "uriuriuriu - Qiita",

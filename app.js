@@ -1,4 +1,6 @@
 var express = require('express');
+var morgan = require('morgan');
+// var corser = require("corser");
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -10,6 +12,11 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 
 var app = express();
+app.use(morgan({ format: 'dev', immediate: true }));
+// app.use(corser.create());
+
+// enable jsonp
+app.enable('jsonp callback');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +39,21 @@ app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+});
+
+app.use(function(req, res, next) {
+  // cors
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Origin", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+  // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:3333");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // res.header("Access-Control-Allow-Headers", "Content-Type");
+
+  // res.header("Access-Control-Allow-Credentials", true);
+  // res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,HEAD,OPTIONS');
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 
 // error handler

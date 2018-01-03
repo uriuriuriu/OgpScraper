@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   var param = {"値":"これはサンプルAPIです"};
   res.header('Content-Type', 'application/json; charset=utf-8');
-  res.send(param);
+  res.jsonp(param);
 });
 
 /* サンプルAPI②
@@ -49,10 +49,10 @@ router.get('/:url', function (req, res, next) {
   var parser = require("ogp-parser");
   parser(req.params.url, true).then(function(data) {
     res.header('Content-Type', 'application/json; charset=utf-8');
-    res.send(data);
+    res.jsonp(data);
   }).catch(function(error) {
     res.header('Content-Type', 'application/json; charset=utf-8');
-    res.send(error);
+    res.jsonp(error);
   });
 });
 
@@ -60,10 +60,10 @@ router.post('/', function(req, res, next) {
   var parser = require("ogp-parser");
   parser(req.body.url, true).then(function(data) {
     res.header('Content-Type', 'application/json; charset=utf-8');
-    res.send(data);
+    res.jsonp(data);
   }).catch(function(error) {
     res.header('Content-Type', 'application/json; charset=utf-8');
-    res.send(error);
+    res.jsonp(error);
   });
 });
 
